@@ -137,3 +137,33 @@ taskInput.addEventListener('keydown', function (event) {
     addTask();
   }
 });
+
+
+// -----------------------------------------------
+// Save the Notes, Focus and Remember cards
+// -----------------------------------------------
+const noteSaveButtons = document.querySelectorAll('.note-save-btn');
+
+noteSaveButtons.forEach(function (saveButton) {
+  const noteKey = saveButton.getAttribute('data-note-key');
+  const noteInput = document.getElementById(noteKey + '-input');
+  const saveStatus = document.getElementById(noteKey + '-status');
+  const storageKey = 'donezo-' + noteKey;
+
+  // Restore this card's saved text when the page loads
+  const savedNote = localStorage.getItem(storageKey);
+  if (savedNote !== null) {
+    noteInput.value = savedNote;
+  }
+
+  saveButton.addEventListener('click', function () {
+    localStorage.setItem(storageKey, noteInput.value);
+    saveStatus.textContent = 'Saved!';
+    saveButton.classList.add('saved');
+
+    setTimeout(function () {
+      saveStatus.textContent = '';
+      saveButton.classList.remove('saved');
+    }, 1500);
+  });
+});

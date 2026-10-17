@@ -1,174 +1,708 @@
-/* =============================================
-   Global reset & base styles
-   ============================================= */
+/* Base styles */
+:root {
+  --ink: #283f3d;
+  --muted: #6d7772;
+  --purple: #d46f77;
+  --purple-dark: #ad505c;
+  --pink: #e6a2a5;
+  --teal: #75aaa4;
+  --paper: #fffdf7;
+  --surface: rgba(255, 253, 247, 0.94);
+  --line: rgba(57, 91, 87, 0.14);
+  --shadow: 0 24px 55px rgba(61, 85, 81, 0.16);
+}
+
 * {
-  box-sizing: border-box;  /* padding/border included in element width */
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f4f8;  /* light grey-blue background */
-  color: #333;
   min-height: 100vh;
-  display: flex;
-  justify-content: center;  /* centre page horizontally */
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) minmax(0, 620px) minmax(150px, 220px);
+  gap: clamp(18px, 4vw, 54px);
+  justify-content: center;
   align-items: flex-start;
-  padding: 40px 16px;        /* top/bottom breathing room */
+  padding: 72px 18px;
+  overflow-x: hidden;
+  font-family: Inter, ui-rounded, "SF Pro Rounded", "Segoe UI", sans-serif;
+  color: var(--ink);
+  background:
+    linear-gradient(rgba(61, 97, 91, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(61, 97, 91, 0.055) 1px, transparent 1px),
+    radial-gradient(circle at 10% 12%, rgba(236, 166, 169, 0.55), transparent 25%),
+    radial-gradient(circle at 90% 82%, rgba(117, 170, 164, 0.45), transparent 28%),
+    #f7f3e9;
+  background-size: 26px 26px, 26px 26px, auto, auto, auto;
 }
 
-/* =============================================
-   Main card container
-   ============================================= */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(2px);
+  animation: float 8s ease-in-out infinite;
+}
+
+body::before {
+  width: 180px;
+  height: 180px;
+  top: -55px;
+  right: 8%;
+  background: rgba(242, 190, 102, 0.45);
+}
+
+body::after {
+  width: 130px;
+  height: 130px;
+  bottom: 4%;
+  left: 7%;
+  background: rgba(105, 168, 160, 0.28);
+  animation-delay: -4s;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid rgba(212, 111, 119, 0.25);
+  outline-offset: 3px;
+}
+
+/* App card */
 .container {
-  background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-  padding: 32px 28px;
+  position: relative;
   width: 100%;
-  max-width: 500px;          /* never wider than 500 px */
+  max-width: 620px;
+  padding: 42px;
+  border: 1px solid rgba(75, 105, 99, 0.11);
+  border-radius: 7px 28px 10px 24px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(20px);
+  animation: card-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* =============================================
-   Page heading
-   ============================================= */
+.container::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  z-index: -1;
+  border: 2px dashed rgba(80, 116, 109, 0.12);
+  border-radius: 5px 23px 8px 20px;
+  pointer-events: none;
+}
+
+.paper-tape,
+.tape {
+  position: absolute;
+  display: block;
+  width: 78px;
+  height: 25px;
+  background: repeating-linear-gradient(90deg, rgba(229, 143, 128, 0.7) 0 7px, rgba(238, 171, 148, 0.78) 7px 14px);
+  box-shadow: 0 2px 4px rgba(75, 61, 48, 0.08);
+  opacity: 0.82;
+}
+
+.paper-tape {
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-2deg);
+  animation: tape-wave 4s ease-in-out infinite;
+}
+
+.app-header {
+  margin-bottom: 30px;
+}
+
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: var(--purple);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
 h1 {
-  font-size: 1.8rem;
-  text-align: center;
-  margin-bottom: 24px;
-  color: #2c3e50;
+  font-family: "Segoe Print", "Comic Sans MS", cursive;
+  font-size: clamp(2.3rem, 8vw, 4rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
 }
 
-/* =============================================
-   Input row  (text box + button side by side)
-   ============================================= */
+h1 span {
+  display: inline-block;
+  color: var(--purple);
+  animation: ink-shimmer 3.5s ease-in-out infinite;
+}
+
+h1 i {
+  display: inline-block;
+  margin-left: 10px;
+  color: #e3a443;
+  font-family: inherit;
+  font-size: 0.42em;
+  font-style: normal;
+  vertical-align: top;
+  animation: sparkle 1.8s ease-in-out infinite;
+}
+
+.app-header p {
+  margin-top: 13px;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+/* New task controls */
 .input-area {
   display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: 10px;
+  padding: 7px;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.72);
+  box-shadow: 0 8px 24px rgba(67, 53, 104, 0.07);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-area:focus-within {
+  border-color: rgba(212, 111, 119, 0.48);
+  box-shadow: 0 10px 28px rgba(173, 80, 92, 0.12);
 }
 
 .input-area input {
-  flex: 1;                   /* input takes all remaining space */
+  flex: 1;
+  min-width: 0;
   padding: 10px 12px;
+  border: 0;
+  outline: 0;
+  color: var(--ink);
+  background: transparent;
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  outline: none;
-  transition: border-color 0.2s;
 }
 
-.input-area input:focus {
-  border-color: #3498db;     /* blue highlight when focused */
+.input-area input::placeholder {
+  color: #aaa4b7;
 }
 
 .input-area button {
-  padding: 10px 18px;
-  font-size: 1rem;
-  background-color: #3498db;  /* friendly blue */
-  color: #ffffff;
-  border: none;
-  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 11px 16px;
+  border: 0;
+  border-radius: 11px;
+  color: white;
+  background: linear-gradient(135deg, var(--purple), #e79a94);
+  box-shadow: 0 8px 18px rgba(186, 83, 96, 0.22);
   cursor: pointer;
-  transition: background-color 0.2s;
-  white-space: nowrap;
+  font-weight: 750;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 .input-area button:hover {
-  background-color: #2980b9;  /* slightly darker on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 11px 24px rgba(186, 83, 96, 0.3);
 }
 
-/* =============================================
-   Error message
-   ============================================= */
+.input-area button:active {
+  transform: translateY(0) scale(0.97);
+}
+
 .error {
-  color: #e74c3c;             /* red */
-  font-size: 0.875rem;
-  margin-bottom: 12px;
+  margin: 9px 4px 0;
+  color: #dc4d6d;
+  font-size: 0.84rem;
 }
 
-/* Utility class – hides any element */
 .hidden {
   display: none;
 }
 
-/* =============================================
-   Task list
-   ============================================= */
+/* Task list */
 #task-list {
-  list-style: none;           /* remove default bullet points */
-  margin-top: 16px;
+  display: grid;
+  gap: 10px;
+  margin-top: 24px;
+  list-style: none;
 }
 
 #task-list li {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 12px;
-  border-bottom: 1px solid #eee;
-  font-size: 1rem;
+  min-width: 0;
+  padding: 13px 14px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.68);
+  box-shadow: 0 5px 16px rgba(61, 48, 91, 0.05);
+  animation: task-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
 }
 
-#task-list li:last-child {
-  border-bottom: none;        /* no line after the last item */
+#task-list li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 24px rgba(61, 48, 91, 0.1);
 }
 
-/* Checkbox – make it a little bigger for easier clicking */
 #task-list li input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-  accent-color: #3498db;      /* colours the tick box blue */
+  width: 19px;
+  height: 19px;
   flex-shrink: 0;
+  accent-color: var(--teal);
+  cursor: pointer;
+  transition: transform 0.2s ease;
 }
 
-/* Task text label */
-#task-list li span {
+#task-list li input[type="checkbox"]:checked {
+  animation: check-pop 0.38s cubic-bezier(0.2, 1.6, 0.4, 1);
+}
+
+#task-list li > span {
   flex: 1;
-  word-break: break-word;     /* wrap long words */
+  min-width: 0;
+  overflow-wrap: anywhere;
+  transition: color 0.2s ease, opacity 0.2s ease;
 }
 
-/* Text box shown while a task is being edited */
+#task-list li.completed > span {
+  color: #9a95a6;
+  text-decoration: line-through;
+  opacity: 0.7;
+  animation: completed-swish 0.4s ease both;
+}
+
 .edit-input {
   flex: 1;
   min-width: 0;
-  padding: 5px 8px;
-  font-size: 1rem;
-  border: 1px solid #3498db;
-  border-radius: 4px;
+  padding: 7px 9px;
+  border: 1px solid rgba(212, 111, 119, 0.55);
+  border-radius: 9px;
+  color: var(--ink);
+  background: white;
 }
 
-/* Strike-through style for completed tasks */
-#task-list li.completed span {
-  text-decoration: line-through;
-  color: #999;
-}
-
-/* =============================================
-   Edit and delete buttons
-   ============================================= */
 .edit-btn,
 .delete-btn {
-  padding: 4px 10px;
-  font-size: 0.8rem;
-  background-color: #e74c3c;   /* red */
-  color: #ffffff;
-  border: none;
-  border-radius: 4px;
+  flex-shrink: 0;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 9px;
   cursor: pointer;
-  flex-shrink: 0;               /* never squish the button */
-  transition: background-color 0.2s;
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: transform 0.16s ease, background-color 0.16s ease;
 }
 
 .edit-btn {
-  background-color: #3498db;
+  color: #326f69;
+  background: #ddefec;
 }
 
 .edit-btn:hover {
-  background-color: #2980b9;
+  background: #c7e4df;
+  transform: translateY(-2px) rotate(-2deg);
+}
+
+.delete-btn {
+  color: #d44566;
+  background: #ffedf1;
 }
 
 .delete-btn:hover {
-  background-color: #c0392b;   /* darker red on hover */
+  background: #ffdce5;
+  transform: translateY(-2px) rotate(2deg);
+}
+
+/* Motivational cards */
+.pep-talk {
+  margin-top: 34px;
+  padding-top: 22px;
+  border-top: 2px dashed rgba(68, 110, 104, 0.18);
+}
+
+.pep-talk-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-bottom: 17px;
+  color: var(--purple-dark);
+}
+
+.pep-talk-heading h2 {
+  font-family: "Segoe Print", "Comic Sans MS", cursive;
+  font-size: 1.05rem;
+}
+
+.pep-talk-heading > span {
+  color: #dfa242;
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+.pep-talk-heading > span:last-child {
+  animation-delay: -1s;
+}
+
+.quote-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 11px;
+}
+
+.quote-card {
+  position: relative;
+  display: grid;
+  align-content: center;
+  min-height: 112px;
+  padding: 20px 14px 15px;
+  border-radius: 5px 17px 7px 14px;
+  color: #38514d;
+  box-shadow: 0 8px 18px rgba(48, 76, 71, 0.1);
+  text-align: center;
+  animation: quote-float 4.8s ease-in-out infinite;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quote-card:nth-child(2) {
+  animation-delay: -1.6s;
+}
+
+.quote-card:nth-child(3) {
+  animation-delay: -3.2s;
+}
+
+.quote-card:hover {
+  z-index: 1;
+  transform: translateY(-7px) rotate(0deg) scale(1.04);
+  box-shadow: 0 14px 24px rgba(48, 76, 71, 0.16);
+}
+
+.quote-card > span {
+  position: absolute;
+  top: 6px;
+  right: 9px;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1rem;
+}
+
+.quote-card p {
+  font-family: "Segoe Print", "Comic Sans MS", cursive;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.quote-card-coral {
+  background: #efb0ae;
+  transform: rotate(-2deg);
+}
+
+.quote-card-mint {
+  background: #a8d0c9;
+  transform: rotate(1.5deg);
+}
+
+.quote-card-yellow {
+  background: #f4d592;
+  transform: rotate(-1deg);
+}
+
+/* Decorative scrapbook notes */
+.side-note,
+.remember-note {
+  position: relative;
+  box-shadow: 0 17px 35px rgba(54, 78, 74, 0.13);
+}
+
+.side-note {
+  margin-top: 94px;
+  padding: 35px 25px 28px;
+  border-radius: 5px 28px 8px 22px;
+  background: #dfa09f;
+  color: #3f5550;
+  transform: rotate(-2deg);
+  animation: note-float 5s ease-in-out infinite;
+}
+
+.side-note h2,
+.remember-note h2 {
+  font-family: "Segoe Print", "Comic Sans MS", cursive;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.note-editor textarea {
+  width: 100%;
+  min-height: 130px;
+  margin-top: 18px;
+  padding: 10px 4px;
+  resize: vertical;
+  border: 0;
+  border-top: 2px solid rgba(255, 255, 255, 0.48);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.48);
+  outline: 0;
+  color: rgba(40, 63, 61, 0.78);
+  background: repeating-linear-gradient(transparent 0 29px, rgba(255, 255, 255, 0.46) 29px 31px);
+  line-height: 1.75;
+}
+
+.note-editor textarea::placeholder {
+  color: rgba(40, 63, 61, 0.5);
+}
+
+.note-editor textarea:focus {
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+.note-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.save-status {
+  min-height: 1em;
+  color: rgba(40, 63, 61, 0.74);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.note-save-btn {
+  padding: 7px 12px;
+  border: 0;
+  border-radius: 8px 12px 7px 10px;
+  color: #fffdf7;
+  background: #456e68;
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 750;
+  transition: transform 0.18s ease, background-color 0.18s ease;
+}
+
+.note-save-btn:hover {
+  transform: translateY(-2px) rotate(-2deg);
+  background: #345a55;
+}
+
+.note-save-btn.saved {
+  animation: save-pop 0.5s cubic-bezier(0.2, 1.6, 0.4, 1);
+}
+
+.tape {
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%) rotate(2deg);
+}
+
+.tape-mint {
+  background: repeating-linear-gradient(90deg, rgba(240, 207, 178, 0.85) 0 7px, rgba(255, 223, 190, 0.9) 7px 14px);
+}
+
+.doodle-heart {
+  position: absolute;
+  top: 15px;
+  right: 17px;
+  color: #f5d6ca;
+  font-size: 1.5rem;
+  animation: heart-beat 1.7s ease-in-out infinite;
+}
+
+.scribble {
+  display: block;
+  margin-top: 15px;
+  color: #f4ddd2;
+  font-size: 1.35rem;
+  letter-spacing: -0.2em;
+}
+
+.side-stack {
+  display: grid;
+  gap: 28px;
+  margin-top: 45px;
+}
+
+.focus-note {
+  margin-top: 0;
+  background: #92c0bb;
+  transform: rotate(2deg);
+  animation-delay: -2.5s;
+}
+
+.remember-note {
+  display: grid;
+  gap: 7px;
+  padding: 22px 21px;
+  border-radius: 6px 18px 7px 14px;
+  color: #fdf7e9;
+  background: #446e68;
+  transform: rotate(-1.5deg);
+  animation: remember-rock 4s ease-in-out infinite;
+}
+
+.remember-note textarea {
+  min-height: 90px;
+  color: #fff9e9;
+  background: repeating-linear-gradient(transparent 0 29px, rgba(255, 255, 255, 0.22) 29px 31px);
+}
+
+.remember-note textarea::placeholder,
+.remember-note .save-status {
+  color: rgba(255, 249, 233, 0.7);
+}
+
+.remember-note .note-save-btn {
+  color: #446e68;
+  background: #f4c878;
+}
+
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(22px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes task-in {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(16px) rotate(6deg); }
+}
+
+@keyframes note-float {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-10px) rotate(1deg); }
+}
+
+@keyframes remember-rock {
+  0%, 100% { transform: rotate(-1.5deg) scale(1); }
+  50% { transform: rotate(1.5deg) scale(1.025); }
+}
+
+@keyframes tape-wave {
+  0%, 100% { transform: translateX(-50%) rotate(-2deg); }
+  50% { transform: translateX(-50%) rotate(2deg); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0.45; transform: rotate(0deg) scale(0.75); }
+  50% { opacity: 1; transform: rotate(35deg) scale(1.2); }
+}
+
+@keyframes ink-shimmer {
+  0%, 100% { color: var(--purple); }
+  50% { color: #e89b78; }
+}
+
+@keyframes heart-beat {
+  0%, 100% { transform: scale(1) rotate(-8deg); }
+  50% { transform: scale(1.18) rotate(5deg); }
+}
+
+@keyframes check-pop {
+  0% { transform: scale(0.7); }
+  60% { transform: scale(1.28) rotate(8deg); }
+  100% { transform: scale(1); }
+}
+
+@keyframes completed-swish {
+  from { transform: translateX(-4px); }
+  to { transform: translateX(0); }
+}
+
+@keyframes save-pop {
+  0% { transform: scale(0.85); }
+  55% { transform: scale(1.14) rotate(3deg); }
+  100% { transform: scale(1); }
+}
+
+@keyframes quote-float {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 0 -6px; }
+}
+
+@media (max-width: 980px) {
+  body {
+    grid-template-columns: minmax(0, 620px);
+  }
+
+  .container {
+    order: 1;
+  }
+
+  .side-note-left {
+    order: 2;
+    margin-top: 12px;
+  }
+
+  .side-stack {
+    order: 3;
+    margin-top: 0;
+  }
+
+  .side-note,
+  .remember-note {
+    width: min(100%, 620px);
+    transform: none;
+  }
+}
+
+@media (max-width: 560px) {
+  body {
+    padding: 32px 12px;
+  }
+
+  .container {
+    padding: 30px 20px;
+    border-radius: 24px;
+  }
+
+  .input-area button {
+    padding-inline: 13px;
+  }
+
+  #task-list li {
+    flex-wrap: wrap;
+  }
+
+  #task-list li > span,
+  .edit-input {
+    flex-basis: calc(100% - 34px);
+  }
+
+  .edit-btn {
+    margin-left: 29px;
+  }
+
+  .quote-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-card {
+    min-height: 85px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
