@@ -129,6 +129,16 @@ h1 {
   word-break: break-word;     /* wrap long words */
 }
 
+/* Text box shown while a task is being edited */
+.edit-input {
+  flex: 1;
+  min-width: 0;
+  padding: 5px 8px;
+  font-size: 1rem;
+  border: 1px solid #3498db;
+  border-radius: 4px;
+}
+
 /* Strike-through style for completed tasks */
 #task-list li.completed span {
   text-decoration: line-through;
@@ -136,8 +146,9 @@ h1 {
 }
 
 /* =============================================
-   Delete button (one per task)
+   Edit and delete buttons
    ============================================= */
+.edit-btn,
 .delete-btn {
   padding: 4px 10px;
   font-size: 0.8rem;
@@ -150,7 +161,14 @@ h1 {
   transition: background-color 0.2s;
 }
 
+.edit-btn {
+  background-color: #3498db;
+}
+
+.edit-btn:hover {
+  background-color: #2980b9;
+}
+
 .delete-btn:hover {
   background-color: #c0392b;   /* darker red on hover */
 }
-
