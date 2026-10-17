@@ -48,7 +48,57 @@ function addTask() {
   const span = document.createElement('span');
   span.textContent = taskText;
 
-  // 5. Create the delete button
+  // 5. Create the edit button
+  const editBtn = document.createElement('button');
+  editBtn.textContent = 'Edit';
+  editBtn.classList.add('edit-btn');
+  editBtn.setAttribute('aria-label', 'Edit task');
+
+  // Switch between showing the task and editing it in a text box
+  editBtn.addEventListener('click', function () {
+    const editInput = li.querySelector('.edit-input');
+
+    if (editInput) {
+      const updatedText = editInput.value.trim();
+
+      if (updatedText === '') {
+        editInput.setCustomValidity('Please enter a task before saving.');
+        editInput.reportValidity();
+        editInput.focus();
+        return;
+      }
+
+      span.textContent = updatedText;
+      li.replaceChild(span, editInput);
+      editBtn.textContent = 'Edit';
+      editBtn.setAttribute('aria-label', 'Edit task');
+      return;
+    }
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = span.textContent;
+    input.classList.add('edit-input');
+    input.setAttribute('aria-label', 'Edit task text');
+
+    input.addEventListener('input', function () {
+      input.setCustomValidity('');
+    });
+
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') {
+        editBtn.click();
+      }
+    });
+
+    li.replaceChild(input, span);
+    editBtn.textContent = 'Save';
+    editBtn.setAttribute('aria-label', 'Save task');
+    input.focus();
+    input.select();
+  });
+
+  // 6. Create the delete button
   const deleteBtn = document.createElement('button');
   deleteBtn.textContent = 'Delete';
   deleteBtn.classList.add('delete-btn');
@@ -59,12 +109,13 @@ function addTask() {
     taskList.removeChild(li);
   });
 
-  // 6. Put the checkbox, text and delete button into the list item
+  // 7. Put the checkbox, text and buttons into the list item
   li.appendChild(checkbox);
   li.appendChild(span);
+  li.appendChild(editBtn);
   li.appendChild(deleteBtn);
 
-  // 7. Add the list item to the <ul>
+  // 8. Add the list item to the <ul>
   taskList.appendChild(li);
 
   // --- Clear the input box so it's ready for the next task ---
