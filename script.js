@@ -48,11 +48,23 @@ function addTask() {
   const span = document.createElement('span');
   span.textContent = taskText;
 
-  // 5. Put the checkbox and text into the list item
+  // 5. Create the delete button
+  const deleteBtn = document.createElement('button');
+  deleteBtn.textContent = 'Delete';
+  deleteBtn.classList.add('delete-btn');
+  deleteBtn.setAttribute('aria-label', 'Delete task');
+
+  // When clicked, remove the whole list item from the page
+  deleteBtn.addEventListener('click', function () {
+    taskList.removeChild(li);
+  });
+
+  // 6. Put the checkbox, text and delete button into the list item
   li.appendChild(checkbox);
   li.appendChild(span);
+  li.appendChild(deleteBtn);
 
-  // 6. Add the list item to the <ul>
+  // 7. Add the list item to the <ul>
   taskList.appendChild(li);
 
   // --- Clear the input box so it's ready for the next task ---
