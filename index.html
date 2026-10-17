@@ -3,15 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My To-Do List</title>
+    <title>Donezo — My To-Do List</title>
     <!-- Link to our stylesheet -->
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
 
-    <div class="container">
+    <aside class="side-note side-note-left note-editor">
+      <span class="tape tape-coral"></span>
+      <span class="doodle-heart" aria-hidden="true">♥</span>
+      <h2><label for="notes-input">Notes</label></h2>
+      <textarea id="notes-input" placeholder="Write a little note..."></textarea>
+      <div class="note-actions">
+        <span id="notes-status" class="save-status" aria-live="polite"></span>
+        <button class="note-save-btn" data-note-key="notes">Save</button>
+      </div>
+    </aside>
 
-      <h1>My To-Do List</h1>
+    <main class="container">
+
+      <span class="paper-tape" aria-hidden="true"></span>
+
+      <header class="app-header">
+        <span class="eyebrow">YOUR DAILY RESET</span>
+        <h1>Get it <span>donezo.</span><i aria-hidden="true">✦</i></h1>
+        <p>Small steps, main-character energy.</p>
+      </header>
 
       <!-- Input area: text box + button -->
       <div class="input-area">
@@ -21,7 +38,7 @@
           placeholder="Enter a new task..."
           aria-label="New task"
         />
-        <button id="add-btn">Add Task</button>
+        <button id="add-btn">Add <span aria-hidden="true">＋</span></button>
       </div>
 
       <!-- Error message shown when the input is empty -->
@@ -30,7 +47,50 @@
       <!-- The list of tasks will appear here -->
       <ul id="task-list"></ul>
 
-    </div>
+      <section class="pep-talk" aria-labelledby="pep-talk-title">
+        <div class="pep-talk-heading">
+          <span aria-hidden="true">✿</span>
+          <h2 id="pep-talk-title">Tiny pep talks</h2>
+          <span aria-hidden="true">✦</span>
+        </div>
+
+        <div class="quote-grid">
+          <blockquote class="quote-card quote-card-coral">
+            <span aria-hidden="true">☀</span>
+            <p>Progress over perfection.</p>
+          </blockquote>
+          <blockquote class="quote-card quote-card-mint">
+            <span aria-hidden="true">♡</span>
+            <p>You can do hard things.</p>
+          </blockquote>
+          <blockquote class="quote-card quote-card-yellow">
+            <span aria-hidden="true">★</span>
+            <p>Future you is cheering.</p>
+          </blockquote>
+        </div>
+      </section>
+
+    </main>
+
+    <aside class="side-stack">
+      <section class="side-note focus-note note-editor">
+        <span class="tape tape-mint"></span>
+        <h2><label for="focus-input">Focus</label></h2>
+        <textarea id="focus-input" placeholder="What matters most?"></textarea>
+        <div class="note-actions">
+          <span id="focus-status" class="save-status" aria-live="polite"></span>
+          <button class="note-save-btn" data-note-key="focus">Save</button>
+        </div>
+      </section>
+      <section class="remember-note note-editor">
+        <h2><label for="remember-input">Remember</label></h2>
+        <textarea id="remember-input" placeholder="Don't forget..."></textarea>
+        <div class="note-actions">
+          <span id="remember-status" class="save-status" aria-live="polite"></span>
+          <button class="note-save-btn" data-note-key="remember">Save</button>
+        </div>
+      </section>
+    </aside>
 
     <!-- Link to our JavaScript file -->
     <script src="script.js"></script>
